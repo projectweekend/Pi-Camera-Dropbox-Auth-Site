@@ -3,6 +3,7 @@ from dropbox.client import DropboxOAuth2Flow, DropboxClient
 from flask import Flask
 from flask import session
 from flask import request
+from flask import make_response
 from flask import render_template
 
 
@@ -32,9 +33,6 @@ def function():
     flow = DropboxOAuth2Flow(DROPBOX_KEY, DROPBOX_SECRET, REDIRECT_URI,
                                 session, 'dropbox-auth-csrf-token')
     access_token, user_id, url_state = flow.finish(request.args)
-    template_data = {
-        'token': access_token,
-        'user_id': user_id,
-        'url_state': url_state
-    }
-    return render_template('token.html', **template_data)
+    response = make_response(access_token)
+    response.headers['Content-Disposition'] = 'attachment; filename=dropbox.txt'
+    return response
