@@ -7,9 +7,10 @@ from flask import render_template
 
 app = Flask(__name__)
 
-DROPBOX_KEY = os.getenv('DROPBOX_KEY')
-DROPBOX_SECRET = os.getenv('DROPBOX_SECRET')
-REDIRECT_URI = os.getenv('REDIRECT_URI')
+
+DROPBOX_KEY = os.environ['DROPBOX_KEY']
+DROPBOX_SECRET = os.environ['DROPBOX_SECRET']
+REDIRECT_URI = os.environ['REDIRECT_URI']
 
 
 @app.route('/')
