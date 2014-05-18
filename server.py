@@ -6,6 +6,7 @@ from flask import render_template
 
 
 app = Flask(__name__)
+app.config['DEBUG'] = True
 
 
 DROPBOX_KEY = os.environ['DROPBOX_KEY']
@@ -20,7 +21,8 @@ def index():
     template_data = {
         'authorize_url': flow.start()
     }
-    return render_template('index.html', template_data)
+
+    return render_template('index.html', **template_data)
 
 
 @app.route('/token')
