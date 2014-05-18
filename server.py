@@ -29,7 +29,7 @@ def index():
 
 
 @app.route('/token')
-def function():
+def token():
     flow = DropboxOAuth2Flow(DROPBOX_KEY, DROPBOX_SECRET, REDIRECT_URI,
                                 session, 'dropbox-auth-csrf-token')
     access_token, user_id, url_state = flow.finish(request.args)
