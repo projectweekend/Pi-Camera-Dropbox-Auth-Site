@@ -12,7 +12,6 @@ app = Flask(__name__)
 app.secret_key = os.environ['SESSION_KEY']
 app.config['DEBUG'] = True
 
-
 DROPBOX_KEY = os.environ['DROPBOX_KEY']
 DROPBOX_SECRET = os.environ['DROPBOX_SECRET']
 REDIRECT_URI = os.environ['REDIRECT_URI']
@@ -27,6 +26,11 @@ def index():
     }
 
     return render_template('index.html', **template_data)
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 
 @app.route('/token')
