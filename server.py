@@ -6,6 +6,8 @@ from flask import render_template
 
 
 app = Flask(__name__)
+app.secret_key = os.environ['SESSION_KEY']
+app.config['DEBUG'] = True
 
 
 DROPBOX_KEY = os.environ['DROPBOX_KEY']
