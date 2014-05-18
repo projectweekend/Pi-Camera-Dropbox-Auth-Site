@@ -1,6 +1,7 @@
 import os
-import dropbox
+from dropbox.client import DropboxOAuth2Flow, DropboxClient
 from flask import Flask
+from flask import session
 from flask import render_template
 
 
@@ -8,12 +9,17 @@ app = Flask(__name__)
 
 DROPBOX_KEY = os.getenv('DROPBOX_KEY')
 DROPBOX_SECRET = os.getenv('DROPBOX_SECRET')
-
+REDIRECT_URI = os.getenv('REDIRECT_URI')
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    flow = DropboxOAuth2Flow(DROPBOX_KEY, DROPBOX_SECRET, REDIRECT_URI,
+                                session, 'dropbox-auth-csrf-token')
+    template_data = {
+        'authorize_url': flow.start()
+    }
+    return render_template('index.html', template_data)
 
 
 @app.route('/token')
