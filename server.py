@@ -33,14 +33,30 @@ def about():
     return render_template('about.html')
 
 
+@app.route('/whoops')
+def whoops():
+    return render_template('whoops.html')
+
+
+@app.route('/sorry')
+def sorry():
+    return render_template('sorry.html')
+
+
 @app.route('/token')
 def token():
     flow = DropboxOAuth2Flow(DROPBOX_KEY, DROPBOX_SECRET, REDIRECT_URI,
                                 session, 'dropbox-auth-csrf-token')
     try:
         access_token, user_id, url_state = flow.finish(request.args)
-    except DropboxOAuth2Flow.BadRequestException:
+    except DropboxOAuth2Flow.BadStateException:
         return redirect('/')
+    except (DropboxOAuth2Flow.BadRequestException,
+            DropboxOAuth2Flow.CsrfException,
+            DropboxOAuth2Flow.ProviderException):
+        return redirect('/whoops')
+    except DropboxOAuth2Flow.NotApprovedException:
+        return redirect('/sorry')
     response = make_response(access_token)
     response.headers['Content-Disposition'] = 'attachment; filename=dropbox.txt'
     return response
